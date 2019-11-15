@@ -77,6 +77,26 @@ _...use the source, Luke!..._
 * Start your virtual machine
 * ...
 
+# Change configuration
+
+...
+
+# Import vocabularies and mapping data
+
+...
+
+# Experienced programmers: modify Cocoda source code
+
+Only required to extend and modify core functionality and layout.
+
+~~~bash
+npm run serve
+~~~
+
+Local instance is available at <http://localhost:8081>, hot-reloading on
+changes of the source files (`src/`)
+
+Please send pull-requests and communicate changes via <https://github.com/gbv/cocoda/issues>!
 
 [coli-conc]: https://coli-conc.gbv.de/
 [cocoda]: https://coli-conc.gbv.de/cocoda/

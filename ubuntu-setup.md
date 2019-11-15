@@ -95,13 +95,13 @@ sudo update-alternatives --set x-www-browser /usr/bin/chromium-browser
 
 Go to <https://github.com/VSCodium/vscodium/releases>, download and install the latest `_amd64.deb` release:
 
-~~~
+~~~bash
 wget <release-url>
 sudo dpkg --install codium*.deb
 rm codium*.deb
-~~
-
 ~~~
+
+~~~bash
 codium --install-extension octref.vetur
 codium --install-extension buster.ndjson-colorizer
 codium --install-extension dbaeumer.vscode-eslint
@@ -187,12 +187,20 @@ Create configuration and build distribution
 
 ~~~bash
 node -e 'console.log(JSON.stringify({registries:[{provider:"MappingsApi",uri:"http://localhost:3000",status:"http://localhost:3000/status",autoRefresh:5000,subject:[{uri:"http://coli-conc.gbv.de/registry-group/existing-mappings"}],notation:["CT"],prefLabel:{en:"Concordance Registry (local)"}}]}))' | jq . > config/cocoda.json
+~~~
+
+Run during development
+
+~~~bash
+npm run serve
+~~~
+
+Cocoda should now be available at <http://localhost:8081/> and will be rebuild once you modify the source files (see `src/`).
+
+Build distribution and enable as permament service
+
+~~~
 npm run build
-~~~
-
-Start and enable as permament service
-
-~~~
 echo '{"name":"cocoda","script":"http-server dist/"}' > ecosystem.config.json && pm2 start ecosystem.config.json && pm2 save
 npm i -g http-server
 pm2 start http-server --name "cocoda" -- dist/
