@@ -6,7 +6,7 @@ If you just want to run an instance of Cocoda, this setup is not required! Just 
 
 ## VirtualBox
 
-*skip this unless you want to set up the following steps in a VirtualBox VM*
+> skip this unless you want to set up the following steps in a VirtualBox VM
 
 * Install Ubuntu 18.04 LTS
 * Install software updates and restart
@@ -19,7 +19,7 @@ If you just want to run an instance of Cocoda, this setup is not required! Just 
 
 ### Basic development tools
 
-*required*
+> required
 
 ~~~bash
 sudo apt install -y git curl build-essential
@@ -27,7 +27,7 @@ sudo apt install -y git curl build-essential
 
 ### Node and nvm
 
-*required but standard Node may be enough*
+> required but standard Node may be enough
 
 The Node Version Manager (nvm) is useful to switch versions of NodeJS. See [nvm installation](https://github.com/nvm-sh/nvm/blob/master/README.md#installation-and-update) for background information.
 
@@ -39,7 +39,7 @@ nvm install stable
 
 ### jq
 
-*only needed by selected parts but highly recommended anyway*
+> only needed by selected parts but highly recommended anyway
 
 ~~~bash
 sudo apt-get install -y jq
@@ -47,7 +47,7 @@ sudo apt-get install -y jq
 
 ### MongoDB
 
-*only needed by selected parts*
+> only needed by selected parts
 
 There is a version of MongoDB provided by Ubuntu and a version provided by MongoDB. Better [install the latter](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/):
 
@@ -62,13 +62,27 @@ sudo systemctl enable mongod.service
 
 ### Pandoc
 
+> only needed to build manual
+
+~~~bash
+wget https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-1-amd64.deb
+sudo dpkg --install pandoc*.deb
+rm pandoc*.deb
+~~~
+
+If you also want to build user manual in PDF, the following are required (*not included in the VM to reduce disk space!*):
+
+~~~bash
+sudo apt-get install -y texlive-xetex texlive-fonts-recommended texlive-fonts-extra lmodern librsvg2-bin
+~~~
+
 ## Development Environment
 
 This is highly opiniated, every programmer has its own preferences.
 
 ### Chromium
 
-*not required but recommended*
+> not required but recommended
 
 ~~~bash
 sudo apt install -y chromium-browser
@@ -77,7 +91,7 @@ sudo update-alternatives --set x-www-browser /usr/bin/chromium-browser
 
 ### VSCodium
 
-*not required*
+> not required
 
 Go to <https://github.com/VSCodium/vscodium/releases>, download and install the latest `_amd64.deb` release:
 
@@ -112,7 +126,7 @@ npm i -g jskos-cli
 
 ### pm2
 
-*only needed to enable Cocoda and/or jskos-server as service*
+> only needed to enable Cocoda and/or jskos-server as permanent service
 
 ~~~bash
 npm i -g pm2
@@ -123,7 +137,7 @@ Run the command that is printed to enable pm2 process manager.
 
 ### Perl and skos2jskos
 
-*only required for selected parts of coli-conc software*
+> only needed for selected parts of coli-conc software
 
 ~~~bash
 sudo apt-get install -y cpanminus librdf-query-perl librdf-query-client-perl
