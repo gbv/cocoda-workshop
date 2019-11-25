@@ -61,8 +61,6 @@ date: 2019-11-25
 * we use GitHub issue tracker
 * releases at GitHub or via npmjs _(+ packagist & CPAN)_
 
-# Cocoda software architecture
-
 ---
 
 ![](img/architecture.jpg){height=100% width=60%}
@@ -131,17 +129,20 @@ date: 2019-11-25
 
 * Available in Cocoda via source-icons "![](img/code.svg){height=1em width=1em}"
 
-# JSKOS overview: resources
+# JSKOS object types
 
 * items
-    * concepts
-    * concept schemes
-    * mappings
+    * **concepts**
+    * **concept schemes**
+    * **mappings**
     * concordances
     * registries
-* occorrences
 
-# JKOS overview: fields
+* occurrences
+
+* **annotations**
+
+# JKOS overview: fields (1/2)
 
 * item
     * uri
@@ -158,10 +159,33 @@ date: 2019-11-25
     * notationPattern
     * ...
 
+# JKOS overview: fields (1/2)
+
 * mappings
     * fromScheme, toScheme
     * from, to
     * type
+
+* [annotations](https://gbv.github.io/jskos/jskos.html#annotations)
+    * see *Web Annotation Data Model*
+    * two annotation types by now
+        * "assessing" to vote (+1, -1)
+        * "moderating" to confirm
+        * no commenting because workflow unclear
+
+# JSKOS concepts
+
+Opiniated assumptions:
+
+* must have an **uri** with common namespace
+* local identifier after namespace is the (URI escaped) primary **notation** 
+
+~~~json
+{
+  "uri": "http://example.org/concept/A%2013"
+  "notation": ["A 13"]
+}
+~~~
 
 # JSKOS API
 
@@ -174,9 +198,12 @@ date: 2019-11-25
     * GET suggest & search
     * PUT/POST/DELETE mappings, annotations
 
+* Another use case (prototype): <https://github.com/gbv/cocoda-winibw>
+
 # Let's get hacking!
 
 * Start your virtual machine
+    * I forgot a `npm i -g jskos-cli` to update!
 * Open locally running Cocoda instance
 * Try out and find more
 
@@ -195,14 +222,81 @@ Not included here: login-server, wikidata-jskos...
 * Hot reload with `npm run serve`
 * Update build with `npm run build`
 
-# Import vocabularies and mapping data
+# Prepare your own vocabularies: concept scheme
 
-...
+*German summary [in the Cocoda GitHub Wiki](https://github.com/gbv/cocoda/wiki/Integration-neue-Vokabulare-in-Cocoda#1-vokabular-identifizieren-und-beschreiben)*
 
-# Prepare your own vocabularies and mapping data
+First describe the vocabulary in JSKOS, e.g. `scheme.json`
+
+~~~json
+{
+  "uri": "http://example.org/voc/",
+  "prefLabel": { "en": "example vocabulary" },
+  "notation": [ "EX" ],
+  "namespace": "http://example.org/voc/",
+  "notationPattern": ".+"
+}
+~~~
+
+Validate with `jskos-validate scheme scheme.json`
+
+# Prepare your own vocabularies: concepts
 
 * Create JSKOS data format as newline delimited json
 * validate with `jskos-validate`
+* Several ways to create JSKOS data
+    * JSKOS from CSV
+    * JSKOS from RDF
+    * JSKOS from MARCXML
+    * Any other means
+
+# JSKOS concepts from CSV
+
+* Create JSON to describe the vocabulary by hand (`scheme.json`)
+* Create CSV with concepts (`concepts.csv`) having columns
+    * `prefLabel`
+    * `notation`
+    * `scopeNote` (optional)
+    * `level` (optional)
+    * `broaderNotation` (optional)
+
+# ~JSKOS mappings from CSV~
+
+Create CSV with columns
+
+* `fromNotation`
+* `toNotation`
+* `type`
+
+*Sorry, not part of jskos-convert yet!*
+
+There is a Perl script [csv2jskos](https://github.com/gbv/cocoda-mappings/blob/master/csv/csv2jskos.pl)
+
+# JSKOS concept scheme and concepts from RDF
+
+* based on SKOS vocabulary
+* `skos2jskos` Perl script
+* only for small or mid-size vocabularies
+* RDF is not always the same as RDF!
+
+*Alternative: Skosmos*
+
+# JSKOS concepts from MARCXML
+
+* Python tool [mc2skos](https://github.com/scriptotek/mc2skos)
+* Not installed at the virtual machine
+
+# Import vocabularies and mapping data
+
+* command `jskos-import` (part of jskos-server)
+* data must be provided as newline delimited JSON
+
+~~~bash
+jq -c [.] scheme.json > scheme.ndjson
+
+jskos-import schemes schemes.ndjson
+jskos-import concepts concepts.ndjson
+~~~
 
 # Export data from JSKOS server
 

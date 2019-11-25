@@ -24,5 +24,7 @@ The participants are required to bring their own computer with ~NodeJS (at least
 ## Workshop Material
 
 * A VirtualBox Virtual Machine is available at <https://coli-conc.gbv.de/download/> (file `cocoda.ova`). Please install and try to log in in advance! Username and password are both `cocoda`.
+    * File `ubuntu-setup.md` in this repository documents setup of this virtual machine 
+    * To update the current machien run `npm install -g jskos-cli` 
 
-* Workshop slides source are available in this repository (`swib19.slides.md`)
+* Workshop [slides source](swib19.slides.md) are available in this repository.
